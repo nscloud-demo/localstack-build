@@ -94,6 +94,17 @@ docker-build: 			  ## Build Docker image
 		--add-host="localhost.localdomain:127.0.0.1" \
 		-t $(TAG) $(DOCKER_BUILD_FLAGS) . -f $(DOCKERFILE)
 
+nsc-build: 			  ## Build Docker image
+	# start build
+	# --add-host: Fix for Centos host OS
+	docker buildx build --pull --progress=plain \
+		--build-arg LOCALSTACK_PRE_RELEASE=$(shell cat localstack/__init__.py | grep '^__version__ =' | grep -v '.dev' >> /dev/null && echo "0" || echo "1") \
+		--build-arg LOCALSTACK_BUILD_GIT_HASH=$(shell git rev-parse --short HEAD) \
+		--build-arg=LOCALSTACK_BUILD_DATE=$(shell date -u +"%Y-%m-%d") \
+		--build-arg=LOCALSTACK_BUILD_VERSION=$(IMAGE_TAG) \
+		--add-host="localhost.localdomain:127.0.0.1" \
+		-t $(TAG) $(DOCKER_BUILD_FLAGS) . -f $(DOCKERFILE)
+
 docker-build-multiarch:   ## Build the Multi-Arch Full Docker Image
 	# Make sure to prepare your environment for cross-platform docker builds! (see doc/developer_guides/README.md)
 	# Multi-Platform builds cannot be loaded to the docker daemon from buildx, so we can't add "--load".
