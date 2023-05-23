@@ -198,7 +198,7 @@ jobs:
             REGISTRY=`cat registry.txt`
 
             docker tag localstack/localstack:latest $REGISTRY/localstack/localstack
-            docker push $REGISTRY/localstack/localstack | tee push-output.txt
+            docker push $REGISTRY/localstack/localstack
 
   docker-test:
     parameters:
