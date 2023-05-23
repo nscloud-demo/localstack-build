@@ -179,11 +179,10 @@ jobs:
       - run:
           name: Install nsc remote builder
           command: |
-            curl -H 'CI: true' -fsSL https://get.namespace.so/cloud/install.sh | NS_ROOT=/tmp/nsc sh
-            export PATH="/tmp/nsc/bin:$PATH"
+            curl -H 'CI: true' -fsSL https://get.namespace.so/cloud/install.sh | NS_ROOT=/tmp/workspace/nsc sh
+            echo 'export PATH="/tmp/workspace/nsc/bin:$PATH"' >> "$BASH_ENV" && source "$BASH_ENV"
 
             nsc buildkit buildx setup --background --use
-
       - run:
           name: Build community docker image
           environment:
