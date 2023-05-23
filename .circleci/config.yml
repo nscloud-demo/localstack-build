@@ -187,18 +187,13 @@ jobs:
           name: Build community docker image
           environment:
             DOCKER_BUILD_FLAGS: "--platform linux/amd64,linux/arm64"
-          command: make nsc-build
-
-      - run:
-          name: push image to private registry
-          environment:
-            DOCKER_BUILD_FLAGS: "--platform linux/amd64,linux/arm64"
           command: |
             nsc docker-login --output_registry_to=registry.txt
             REGISTRY=`cat registry.txt`
 
-            docker tag localstack/localstack:latest $REGISTRY/localstack/localstack
-            docker push $REGISTRY/localstack/localstack
+            TAG=$REGISTRY/localstack/localstack \   
+              DOCKER_BUILD_FLAGS="--platform linux/amd64,linux/arm64 --push" \
+              make nsc-build
 
   docker-test:
     parameters:
