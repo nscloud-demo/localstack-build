@@ -97,6 +97,7 @@ docker-build: 			  ## Build Docker image
 nsc-build: 			  ## Build Docker image
 	# start build
 	# --add-host: Fix for Centos host OS
+	# Use default build cache (in remote builder)
 	docker buildx build --pull --progress=plain \
 		--build-arg LOCALSTACK_PRE_RELEASE=$(shell cat localstack/__init__.py | grep '^__version__ =' | grep -v '.dev' >> /dev/null && echo "0" || echo "1") \
 		--build-arg LOCALSTACK_BUILD_GIT_HASH=$(shell git rev-parse --short HEAD) \
