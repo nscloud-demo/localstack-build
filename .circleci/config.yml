@@ -191,7 +191,7 @@ jobs:
             nsc docker-login --output_registry_to=registry.txt
             REGISTRY=`cat registry.txt`
 
-            TAG=$REGISTRY/localstack/localstack \   
+            TAG="$REGISTRY/localstack/localstack" \
               DOCKER_BUILD_FLAGS="--platform linux/amd64,linux/arm64 --push" \
               make nsc-build
 
