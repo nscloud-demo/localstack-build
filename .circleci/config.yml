@@ -183,7 +183,7 @@ jobs:
             wget -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-amd64
             chmod +x ~/.docker/cli-plugins/docker-buildx
 
-      - install-nsc:
+      - install-nsc
       - run:
           name: Install nsc remote builder
           command: nsc buildkit buildx setup --background --use
@@ -221,7 +221,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/workspace
-      - install-nsc:
+      - install-nsc
       - run:
           name: Pull image from private registry
           command: |
@@ -273,7 +273,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/workspace
-      - install-nsc:
+      - install-nsc
       - run:
           name: Pull image from private registry
           command: |
