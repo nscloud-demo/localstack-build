@@ -15,6 +15,7 @@ executors:
 
 commands:
   install-nsc:
+    description: Install latest nsc
     steps:
       - run: |
           curl -H 'CI: true' -fsSL https://get.namespace.so/cloud/install.sh | NS_ROOT=/tmp/nsc sh
