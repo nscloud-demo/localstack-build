@@ -13,6 +13,13 @@ executors:
     machine:
       image: << pipeline.parameters.ubuntu-amd64-machine-image >>
 
+commands:
+  install-nsc:
+    steps:
+      - run: |
+          curl -H 'CI: true' -fsSL https://get.namespace.so/cloud/install.sh | NS_ROOT=/tmp/nsc sh
+          echo 'export PATH="/tmp/nsc/bin:$PATH"' >> "$BASH_ENV" && source "$BASH_ENV"
+
 jobs:
   install:
     executor: ubuntu-machine-amd64
@@ -176,13 +183,10 @@ jobs:
             wget -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-amd64
             chmod +x ~/.docker/cli-plugins/docker-buildx
 
+      - install-nsc:
       - run:
           name: Install nsc remote builder
-          command: |
-            curl -H 'CI: true' -fsSL https://get.namespace.so/cloud/install.sh | NS_ROOT=/tmp/nsc sh
-            echo 'export PATH="/tmp/nsc/bin:$PATH"' >> "$BASH_ENV" && source "$BASH_ENV"
-
-            nsc buildkit buildx setup --background --use
+          command: nsc buildkit buildx setup --background --use
       - run:
           name: Build community docker image
           environment:
@@ -217,12 +221,10 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/workspace
+      - install-nsc:
       - run:
           name: Pull image from private registry
           command: |
-            curl -H 'CI: true' -fsSL https://get.namespace.so/cloud/install.sh | NS_ROOT=/tmp/nsc sh
-            echo 'export PATH="/tmp/nsc/bin:$PATH"' >> "$BASH_ENV" && source "$BASH_ENV"
-
             nsc docker-login --output_registry_to=registry.txt
             REGISTRY=`cat registry.txt`
 
@@ -271,12 +273,10 @@ jobs:
     steps:
       - attach_workspace:
           at: /tmp/workspace
+      - install-nsc:
       - run:
           name: Pull image from private registry
           command: |
-            curl -H 'CI: true' -fsSL https://get.namespace.so/cloud/install.sh | NS_ROOT=/tmp/nsc sh
-            echo 'export PATH="/tmp/nsc/bin:$PATH"' >> "$BASH_ENV" && source "$BASH_ENV"
-
             nsc docker-login --output_registry_to=registry.txt
             REGISTRY=`cat registry.txt`
 
