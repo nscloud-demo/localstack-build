@@ -179,6 +179,7 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run:
+          # CircleCI packages an old buildx version that does not support remote buildx drivers. 
           name: update buildx
           command: |
             mkdir -p ~/.docker/cli-plugins
@@ -423,6 +424,7 @@ workflows:
             - preflight
           context: 
             - nsc-access-token
+      # The Docker build steps are not required but left in for performance comparison.
       - docker-build:
           name: docker-build-amd64
           platform: amd64
