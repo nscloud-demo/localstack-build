@@ -193,7 +193,7 @@ jobs:
             # Log into Namespace Cloud workspace
             nsc auth exchange-circleci-token
             
-            nsc buildkit buildx setup --background --use
+            nsc docker buildx setup --background --use
       - run:
           name: Build community docker image
           environment:
