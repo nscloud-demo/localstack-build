@@ -199,7 +199,7 @@ jobs:
           environment:
             DOCKER_BUILD_FLAGS: "--platform linux/amd64,linux/arm64"
           command: |
-            nsc docker-login --output_registry_to=registry.txt
+            nsc docker login --output_registry_to=registry.txt
             REGISTRY=`cat registry.txt`
 
             TAG="$REGISTRY/localstack/localstack" \
@@ -236,7 +236,7 @@ jobs:
             nsc auth exchange-circleci-token
 
             # Log into private Namespace Cloud registry
-            nsc docker-login --output_registry_to=registry.txt
+            nsc docker login --output_registry_to=registry.txt
             REGISTRY=`cat registry.txt`
 
             docker pull $REGISTRY/localstack/localstack
@@ -292,7 +292,7 @@ jobs:
             nsc auth exchange-circleci-token
 
             # Log into private Namespace Cloud registry
-            nsc docker-login --output_registry_to=registry.txt
+            nsc docker login --output_registry_to=registry.txt
             REGISTRY=`cat registry.txt`
 
             docker pull $REGISTRY/localstack/localstack
